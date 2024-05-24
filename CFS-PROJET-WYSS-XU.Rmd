@@ -42,10 +42,6 @@ data_cleaned$sexe <- as.factor(data_cleaned$sexe)
 data_2015 <- data_cleaned %>%
   filter(ï..annee == 2015)
 
-data_2015_femme <- data_2015 %>%
-  filter(sexe == 2)
-
-
 data_2016 <- data_cleaned %>%
   filter(ï..annee == 2016)
 data_2017 <- data_cleaned %>%
