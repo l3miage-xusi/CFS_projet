@@ -38,18 +38,42 @@ Convertir `data_cleaned$sexe` en facteur permet d'analyser et de visualiser des 
 data_cleaned$sexe <- as.factor(data_cleaned$sexe)
 ```
 
+```{r}
+data_2015 <- data_cleaned %>%
+  filter(ï..annee == 2015)
+
+data_2015_femme <- data_2015 %>%
+  filter(sexe == 2)
+
+
+data_2016 <- data_cleaned %>%
+  filter(ï..annee == 2016)
+data_2017 <- data_cleaned %>%
+  filter(ï..annee == 2017)
+data_2018 <- data_cleaned %>%
+  filter(ï..annee == 2018)
+data_2019 <- data_cleaned %>%
+  filter(ï..annee == 2019)
+data_2020 <- data_cleaned %>%
+  filter(ï..annee == 2020)
+data_2021 <- data_cleaned %>%
+  filter(ï..annee == 2021)
+```
 ## Analyse des données
 ```{r}
 
-age_data <- data_cleaned %>%
-  group_by(cla_age_5) %>%
-  summarise(total_cases = sum(Ntop))
+  
+data_2015P <- data_2015 %>%
+  group_by(sexe, patho_niv1) %>%
+  summarise(total_patients = sum(Ntop, na.rm = TRUE), .groups = "drop")
 
 
-ggplot(age_data, aes(x = cla_age_5, y = total_cases, group = 1)) + 
-  geom_line() +
-    labs(title = "nb de patient par age", x = "age", y = "nb") +theme(axis.text.x = element_text(angle = 45, hjust = 1))
-  theme_minimal()
+
+ggplot(data_2015P, aes(x = patho_niv1, y = total_patients, fill = sexe)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "patho_niv1 par sexe（annee 2015）", x = "patho_niv1", y = "nombre de patients") +
+  theme(axis.text.x = element_text(angle = 15, hjust = 1, size = 8)
+      )
 
 ```
 
