@@ -1,0 +1,56 @@
+---
+title: "projetCFS"
+output: html_document
+author: Wyss Marie / Xu sicong
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Bibliothèque
+```{r}
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+url="effectifs_all.csv"
+data=read.csv(url,
+header=TRUE,
+sep=';')
+```
+
+## Nettoyage des données
+
+Pour chercher les lignes qui manque de valeur :
+
+```{r}
+colSums(is.na(data))
+```
+Selon le résultat, nous voyons que pour la variable *sexe* et la variable *ï..annee*, il y a qu'une seul ligne qui manque la valeur. Par rapport la quntité de la data, qu'une valeur ne change pas grand chose. Donc nous décidons de le supprime.
+
+```{r}
+data_cleaned <- data[!is.na(data$ï..annee) & !is.na(data$sexe) & !is.na(data$Ntop), ]
+```
+Convertir `data_cleaned$sexe` en facteur permet d'analyser et de visualiser des catégories distinctes, facilitant l'analyse statistique et la visualisation.
+```{r}
+data_cleaned$sexe <- as.factor(data_cleaned$sexe)
+```
+
+## Analyse des données
+```{r}
+
+age_data <- data_cleaned %>%
+  group_by(cla_age_5) %>%
+  summarise(total_cases = sum(Ntop))
+
+
+ggplot(age_data, aes(x = cla_age_5, y = total_cases, group = 1)) + 
+  geom_line() +
+    labs(title = "nb de patient par age", x = "age", y = "nb") +theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme_minimal()
+
+```
+
+
